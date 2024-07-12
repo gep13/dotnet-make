@@ -5,6 +5,7 @@ namespace Make;
 public sealed class BuildRunnerSelector
 {
     private readonly IGlobber _globber;
+    private readonly IFileSystem _fileSystem;
     private readonly IEnvironment _environment;
     private readonly IAnsiConsole _console;
     private readonly BuildRunners _runners;
@@ -12,11 +13,13 @@ public sealed class BuildRunnerSelector
 
     public BuildRunnerSelector(
         IGlobber globber,
+        IFileSystem fileSystem,
         IEnvironment environment,
         IAnsiConsole console,
         BuildRunners runners)
     {
         _globber = globber ?? throw new ArgumentNullException(nameof(globber));
+        _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _runners = runners ?? throw new ArgumentNullException(nameof(runners));
@@ -35,7 +38,12 @@ public sealed class BuildRunnerSelector
     {
         var comparer = new PathComparer(isCaseSensitive: false);
 
-        var current = _environment.WorkingDirectory;
+        var current = GetWorkingDirectory(settings);
+        if (current == null)
+        {
+            return null;
+        }
+
         while (current is { IsRoot: false })
         {
             foreach (var runner in _runners.GetBuildRunners())
@@ -84,5 +92,19 @@ public sealed class BuildRunnerSelector
         }
 
         return null;
+    }
+
+    private DirectoryPath? GetWorkingDirectory(MakeSettings settings)
+    {
+        if (settings.WorkingDirectory != null)
+        {
+            var workingDirectory =
+                new DirectoryPath(settings.WorkingDirectory)
+                    .MakeAbsolute(_environment);
+
+            return _fileSystem.Exist(workingDirectory) ? workingDirectory : null;
+        }
+
+        return _environment.WorkingDirectory;
     }
 }

@@ -6,6 +6,7 @@ namespace Make;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
 {
+    private readonly IEnvironment _environment;
     private readonly BuildRunnerSelector _buildRunnerSelector;
     private readonly BuildRunners _runners;
 
@@ -15,19 +16,25 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         [Description("The target to run")]
         public string? Target { get; set; }
 
+        [CommandOption("--prefer <RUNNER>")]
+        [Description("Uses the preferred runner. Available runners are [blue]cake[/], [blue]frosting[/], [blue]project[/], [blue]sln[/], [blue]traversal[/]")]
+        public string? Prefer { get; set; }
+
         [CommandOption("--trace", IsHidden = true)]
         [Description("Outputs trace logging for the make tool")]
         public bool Trace { get; set; }
 
-        [CommandOption("--prefer <RUNNER>")]
-        [Description("Uses the preferred runner. Available runners are [blue]cake[/], [blue]frosting[/], [blue]project[/], [blue]sln[/], [blue]traversal[/]")]
-        public string? Prefer { get; set; }
+        [CommandOption("-w|--working", IsHidden = true)]
+        [Description("Sets the working directory")]
+        public string? WorkingDirectory { get; set; }
     }
 
     public DefaultCommand(
+        IEnvironment environment,
         BuildRunnerSelector buildRunnerSelector,
         BuildRunners runners)
     {
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         _buildRunnerSelector = buildRunnerSelector ?? throw new ArgumentNullException(nameof(buildRunnerSelector));
         _runners = runners ?? throw new ArgumentNullException(nameof(runners));
     }
@@ -38,6 +45,7 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         {
             Trace = settings.Trace,
             Prefer = settings.Prefer,
+            WorkingDirectory = settings.WorkingDirectory,
         };
 
         var result = _buildRunnerSelector.Find(options);
