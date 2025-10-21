@@ -7,7 +7,7 @@ public sealed class MakefileRunner : IBuildRunner
     private readonly IProcessRunner _processRunner;
 
     public string Name { get; } = "Make Runner";
-    public int Order { get; } = 2;
+    public int Order { get; } = 3;
 
     public MakefileRunner(IProcessRunner processRunner)
     {

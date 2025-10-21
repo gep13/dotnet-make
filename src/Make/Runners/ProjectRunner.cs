@@ -9,7 +9,7 @@ public sealed class ProjectRunner : IBuildRunner
     private readonly IAnsiConsole _console;
 
     public string Name { get; } = "Project Builder";
-    public int Order { get; } = 4;
+    public int Order { get; } = 5;
 
     private static readonly string _glob = "./*.{fsproj,csproj,vbproj}";
 
@@ -69,7 +69,7 @@ public sealed class ProjectRunner : IBuildRunner
     {
         return _globber.GetFiles(_glob, new GlobberSettings
         {
-            Comparer = new PathComparer(isCaseSensitive: false),
+            Comparer = new PathComparer(caseSensitive: false),
             Root = path,
         }).ToList();
     }

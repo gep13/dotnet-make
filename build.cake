@@ -14,7 +14,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(context => 
 {
-    DotNetBuild("./src/Make.sln", new DotNetBuildSettings {
+    DotNetBuild("./src/Make.slnx", new DotNetBuildSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -47,7 +47,7 @@ Task("Package")
     .IsDependentOn("Test")
     .Does(context => 
 {
-    context.DotNetPack($"./src/Make.sln", new DotNetPackSettings {
+    context.DotNetPack($"./src/Make.slnx", new DotNetPackSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,

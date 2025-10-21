@@ -9,7 +9,7 @@ public sealed class TraversalRunner : IBuildRunner
     private readonly IAnsiConsole _console;
 
     public string Name { get; } = "Traversal Project Builder";
-    public int Order { get; } = 3;
+    public int Order { get; } = 4;
 
     private static readonly string _glob = "./*.proj";
 
@@ -69,7 +69,7 @@ public sealed class TraversalRunner : IBuildRunner
     {
         return _globber.GetFiles(_glob, new GlobberSettings
         {
-            Comparer = new PathComparer(isCaseSensitive: false),
+            Comparer = new PathComparer(caseSensitive: false),
             Root = path,
         }).ToList();
     }

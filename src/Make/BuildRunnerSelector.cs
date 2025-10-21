@@ -36,7 +36,7 @@ public sealed class BuildRunnerSelector
 
     public (DirectoryPath Root, IBuildRunner Runner)? Find(MakeSettings settings)
     {
-        var comparer = new PathComparer(isCaseSensitive: false);
+        var comparer = new PathComparer(caseSensitive: false);
 
         var current = GetWorkingDirectory(settings);
         if (current == null)

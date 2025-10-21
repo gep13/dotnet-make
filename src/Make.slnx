@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Build/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+  </Folder>
+  <Project Path="Make.Tests/Make.Tests.csproj" />
+  <Project Path="Make/Make.csproj" />
+</Solution>

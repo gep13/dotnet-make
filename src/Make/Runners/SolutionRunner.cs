@@ -11,7 +11,7 @@ public sealed class SolutionRunner : IBuildRunner
     public string Name { get; } = "Solution Builder";
     private static readonly string _glob = "./*.sln";
 
-    public int Order { get; } = 5;
+    public int Order { get; } = 6;
 
     public SolutionRunner(
         IGlobber globber,
@@ -69,7 +69,7 @@ public sealed class SolutionRunner : IBuildRunner
     {
         return _globber.GetFiles(_glob, new GlobberSettings
         {
-            Comparer = new PathComparer(isCaseSensitive: false),
+            Comparer = new PathComparer(caseSensitive: false),
             Root = path,
         }).ToList();
     }
