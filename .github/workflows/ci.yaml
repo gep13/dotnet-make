@@ -34,5 +34,4 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          dotnet tool restore
           dotnet build.cs --target publish --nuget-key="${{secrets.NUGET_API_KEY}}"
