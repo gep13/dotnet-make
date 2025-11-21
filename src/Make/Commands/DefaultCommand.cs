@@ -39,7 +39,9 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         _runners = runners ?? throw new ArgumentNullException(nameof(runners));
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    public override async Task<int> ExecuteAsync(
+        CommandContext context, Settings settings,
+        CancellationToken cancellationToken)
     {
         var options = new MakeSettings
         {

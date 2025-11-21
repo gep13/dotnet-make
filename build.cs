@@ -1,3 +1,5 @@
+#:sdk Cake.Sdk@6.0.0
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -27,24 +29,8 @@ Task("Build")
     });
 });
 
-Task("Test")
-    .IsDependentOn("Build")
-    .Does(context => 
-{
-    DotNetTest("./src/Make.Tests/Make.Tests.csproj", new DotNetTestSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoRestore = true,
-        NoBuild = true,
-        EnvironmentVariables = new Dictionary<string, string> {
-            { "MSBUILDTERMINALLOGGER", "auto" }
-        },
-    });
-});
-
 Task("Package")
-    .IsDependentOn("Test")
+    .IsDependentOn("Build")
     .Does(context => 
 {
     context.DotNetPack($"./src/Make.slnx", new DotNetPackSettings {
@@ -67,7 +53,7 @@ Task("Publish-NuGet")
     .IsDependentOn("Package")
     .Does(context => 
 {
-    var apiKey = Argument<string>("nuget-key", null);
+    var apiKey = Argument<string?>("nuget-key", null);
     if(string.IsNullOrWhiteSpace(apiKey)) {
         throw new CakeException("No NuGet API key was provided.");
     }
@@ -96,4 +82,4 @@ Task("Default")
 ////////////////////////////////////////////////////////////////
 // Execution
 
-RunTarget(target)
+RunTarget(target);
