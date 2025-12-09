@@ -58,6 +58,7 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
 
         var buildContext = new BuildContext(
             result.Value.Root,
+            result.Value.Candidates,
             settings.Target,
             settings.Trace,
             context.Remaining);

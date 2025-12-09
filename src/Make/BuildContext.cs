@@ -5,17 +5,20 @@ namespace Make;
 public sealed class BuildContext
 {
     public DirectoryPath Root { get; }
+    public Spectre.IO.Path[] Candidates { get; }
     public IRemainingArguments RemainingArguments { get; }
     public string? Target { get; }
     public bool Trace { get; }
 
     public BuildContext(
         DirectoryPath root,
+        Spectre.IO.Path[] candidates,
         string? target,
         bool trace,
         IRemainingArguments remainingArguments)
     {
         Root = root;
+        Candidates = candidates;
         Target = target;
         Trace = trace;
         RemainingArguments = remainingArguments ?? throw new ArgumentNullException(nameof(remainingArguments));
