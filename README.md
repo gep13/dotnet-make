@@ -51,18 +51,12 @@ $ dotnet make -- --foo bar
 
 ## Building
 
-We're using [Cake][1] as a [dotnet tool][7]
-for building. So make sure that you've restored Cake by running 
+We're using [Cake][1] [SDK][7]
+for building. Executed by running 
 the following in the repository root:
 
 ```
-> dotnet tool restore
-```
-
-After that, running the build is as easy as writing:
-
-```
-> dotnet cake
+> dotnet build.cs
 ```
 
 ## Copyright
@@ -75,4 +69,4 @@ Copyright (c) 2024 Patrik Svensson
 [4]: https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#project-files
 [5]: https://learn.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022
 [6]: https://github.com/microsoft/MSBuildSdks/blob/main/src/Traversal/README.md
-[7]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+[7]: https://cakebuild.net/docs/running-builds/runners/cake-sdk
