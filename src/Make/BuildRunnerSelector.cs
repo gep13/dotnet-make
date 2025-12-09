@@ -1,4 +1,6 @@
+using Spectre.Console;
 using Spectre.IO;
+using Path = Spectre.IO.Path;
 
 namespace Make;
 
@@ -34,7 +36,7 @@ public sealed class BuildRunnerSelector
         }
     }
 
-    public (DirectoryPath Root, IBuildRunner Runner)? Find(MakeSettings settings)
+    public (DirectoryPath Root, IBuildRunner Runner, Path[] Candidates)? Find(MakeSettings settings)
     {
         var comparer = new PathComparer(caseSensitive: false);
 
@@ -66,12 +68,14 @@ public sealed class BuildRunnerSelector
                             Comparer = comparer,
                         });
 
-                    if (candidates.Any())
+                    if (candidates?.ToArray() is Path[] { Length: > 0 } foundCandidates)
                     {
                         if (settings.Trace)
                         {
                             _console.MarkupLine(
                                 $"[gray]Found root[/] {current.FullPath} [gray]using glob[/] {glob}");
+                            _console.MarkupLine(
+                                $"[gray]Found candidates:[/] {string.Join<Path>(',', foundCandidates)}");
                         }
 
                         if (runner.CanRun(settings, current))
@@ -81,7 +85,7 @@ public sealed class BuildRunnerSelector
                                 _console.MarkupLine($"[gray]Using runner[/] {runner.Name}");
                             }
 
-                            return (current, runner);
+                            return (current, runner, foundCandidates);
                         }
                     }
                 }

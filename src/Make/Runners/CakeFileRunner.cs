@@ -21,7 +21,7 @@ public sealed class CakeFileRunner : IBuildRunner
 
     public IEnumerable<string> GetGlobs(MakeSettings settings)
     {
-        return ["./build.cs"];
+        return ["./build.cs", "./cake.cs"];
     }
 
     public bool CanRun(MakeSettings settings, DirectoryPath path)
@@ -45,7 +45,7 @@ public sealed class CakeFileRunner : IBuildRunner
     {
         var args = new List<string>
         {
-            "build.cs",
+            context.Candidates.FirstOrDefault()?.Segments.LastOrDefault() ?? "build.cs",
         };
 
         if (context.Target != null)
